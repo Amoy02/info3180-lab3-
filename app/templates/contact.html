@@ -1,44 +1,24 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block main %}
-
-<div class="container">
-
-  <h3>CONTACT FORM</h3>
-
-  Fill in this form to contact the site owners.
-
-  <form method="POST" action="{{ url_for('contact') }}">
-    {{ form.csrf_token }}
-    {{ form.name.label }} <br /><span style="color:red"> * </span> Please enter your full name <br /> {{ form.name }}<br /> <br />
-    <ul>
-    {% for error in form.name.errors %}
-      <li style="color:red;">{{ error }}</li>
-    {% endfor %}
-    </ul>
-    {{ form.email.label }} <br /> <span style="color:red"> * </span>Please enter your e-mail address <br /> {{ form.email }}<br /> <br />
-    <ul>
-    {% for error in form.email.errors %}
-      <li style="color:red;">{{ error }}</li>
-    {% endfor %}
-    </ul>
-    {{ form.subject.label }} <br /> <span style="color:red"> * </span>Pleae enter subject <br />  {{ form.subject(size="55") }}<br /> <br />
-    <ul>
-    {% for error in form.subject.errors %}
-      <li style="color:red;">{{ error }}</li>
-    {% endfor %}
-    </ul>
-    {{ form.textArea.label }} <br /> <span style="color:red"> * </span>Please enter the message you want to send. <br /> {{ form.textArea }}<br /> <br />
-    <ul>
-    {% for error in form.textArea.errors %}
-      <li style="color:red;">{{ error }}</li>
-    {% endfor %}
-    </ul>
-    <button type="submit">Send</button>
-
-
-  </form>
-
-</div>
-
+    <h2>Contact Form</h2>
+<br>
+    <p>Fill in this form to contact the site owners.</p>
+    <form method="post" action="{{ url_for('contact') }}">
+        {% include 'flash_messages.html' %}
+        {{ form.csrf_token }}
+        <div class="form-group">
+            {{ form.name.label }}<br>  <span>Please enter your full name</span>{{ form.name(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.email.label }} <br> <span>Please enter your e-mail address</span> {{ form.email(class="form-control", placeholder="jdoe@example.com") }}
+        </div>
+        <div class="form-group">
+            {{ form.subject.label }} <br> <span>Please enter the subject for your message</span>  {{ form.subject(class="form-control")}}
+        </div>
+        <div class="form-group">
+            {{ form.textArea.label }} <br> <span>Please enter the message you would like to send</span>{{ form.textArea(class="form-control") }}
+        </div>
+    <button type="submit" class="btn btn-primary">Send</button>
+</form>
 {% endblock %}

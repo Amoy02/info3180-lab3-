@@ -9,6 +9,7 @@ from app import mail
 from flask_mail import Message
 from flask import render_template, request, redirect, url_for, flash
 from .forms import ContactForm
+from flask_wtf.csrf import CSRFProtect 
 
 
 ###
@@ -30,12 +31,17 @@ def about():
 def contact():
     """Render the websites's contact page."""
     form = ContactForm()
-    if form.validate_on_submit():
-        msg = Message(request.form['subject'], sender=(request.form['name'],request.form['email']),recipients=["b120e8ab63-b55e4e@inbox.mailtrap.io"])
-        msg.body = request.form['message']
-        mail.send(msg)
-        flash('Message successfully sent from %s'%(request.form['name']))
-        return redirect('/')
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            name = form.name.data
+            email = form.email.data
+            subject = form.subject.data
+            textArea = form.textArea.data
+            messge = Message(subject, sender=(name, email),recipients=["b120e8ab63-b55e4e@inbox.mailtrap.io"])
+            messge.body = textArea
+            mail.send(messge)
+            flash('Message successfully sent from %s'%(request.form['name']))
+            return redirect('/')
     return render_template('contact.html',form=form)
    
 ###
